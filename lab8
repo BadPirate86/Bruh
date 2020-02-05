@@ -1,0 +1,194 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileWriter;
+
+class Student {
+
+    int studentnumber;
+    int grade;
+    String lastname;
+    String firstname;
+    String gender;
+
+    Student(int sstudentnumber, int sgrade, String slastname, String sfirstname, String sgender) {
+        this.studentnumber = sstudentnumber;
+        this.grade = sgrade;
+        this.lastname = slastname;
+        this.firstname = sfirstname;
+        this.gender = sgender;
+    }
+}
+
+class lab8 {
+    public static void main(String[] args) throws IOException {
+        int choice = 0;
+        BufferedReader reader = new BufferedReader(new FileReader("classlist.txt"));
+        Scanner in = new Scanner(new File("classlist.txt"));
+        Scanner In = new Scanner(System.in);
+
+        while (choice < 3) {
+            System.out.println("What lab would you like?");
+            System.out.println("Counting: 1");
+            System.out.println("Bubblesort: 2");
+
+            choice = In.nextInt();
+
+            switch (choice) {
+
+            case 1:
+                count(in);
+                break;
+
+            case 2:
+                bubble(in,reader);
+                break;
+            }
+        }
+    }
+
+    public static void count(Scanner in) throws IOException {
+        int studentnumber[] = new int[88];
+        int gr[] = new int[88];
+        String firstname[] = new String[88];
+        char gender[] = new char[88];
+        int firstletter[] = new int[25];
+        int alphabet[] = new int[26];
+        int counter = 0;
+        int fm[] = new int[2];
+        int grade[] = new int[4];
+        int charval = 33;
+        char mychar;
+
+        for (int i = 65; i < 90; i++) {
+            alphabet[counter] = i;
+
+            counter++;
+        } // adds the ascii values of the alphabet into the array
+
+        for (int i = 0; i < 88; i++) {
+
+            studentnumber[i] = in.nextInt();
+
+            gr[i] = in.nextInt();
+
+            switch (grade[i]) {
+            case 9:
+                grade[1]++;
+                break;
+            case 10:
+                grade[2]++;
+                break;
+            case 11:
+                grade[3]++;
+                break;
+            case 12:
+                grade[4]++;
+                break;
+            }// switch for adding 1 to the variable that counts the certain grade a student
+             // has
+
+            mychar = in.next().charAt(0);
+
+            charval = (int) mychar;
+
+            for (int ii = 0; ii < 25; ii++) {
+
+                if (charval == alphabet[ii]) {
+                    firstletter[ii]++;
+                } // if
+            } // for
+
+            firstname[i] = in.next();
+
+            gender[i] = in.next().charAt(0);
+
+            charval = (int) gender[i];
+
+            if (charval == 70) {
+                fm[1]++;
+            } // if
+            if (charval == 77) {
+                fm[2]++;
+            } // if
+
+        } // for statement that reads the classlist.txt and counts grade, first letter,
+          // and gender
+
+        System.out.println(" Freshman: " + grade[1] + " \n Sophmores: " + grade[2] + " \n Junior: " + grade[3]
+                + " \n Senior: " + grade[4] + " \n \n Girls : " + fm[1] + " \n Boys : " + fm[2]
+                + " \n \n Last names beginning with:");
+        for (int i = 0; i < 25; i++) {
+            System.out.println("" + (char) alphabet[i] + " : " + firstletter[i] + "");
+        } // for
+          // outputs all the grades, firstletters of last name, and the genders
+
+    }// main
+
+    public static void bubble(Scanner in, BufferedReader reader) throws IOException, NoSuchElementException {
+        Student[] list = new Student[100];
+        int counter = 0;
+        int lines = 0;
+        boolean organize = false;
+        int char1;
+        int char2;
+        Student placement;
+
+        while (reader.readLine() != null) lines++;
+        reader.close();
+        // while statement that uses a BufferedReader to read the amount of lines in the file
+
+        for(int i = 0; i < lines; i++){
+
+            list[i] = new Student(in.nextInt(), in.nextInt(), in.next(), in.next(), in.next());
+
+        }//puts the file into the object student to better sort the lines
+
+        while(organize != true){
+            //System.out.println(lines);
+            counter = 0;
+            organize = true;
+            while(counter < lines){
+                char1 = list[counter].lastname.charAt(0);
+
+                if(counter < lines - 1){
+
+                    char2 = list[counter + 1].lastname.charAt(0);
+                }else{
+                    char2 = 300;
+                }
+
+                if(char1 > char2){
+
+                    placement = list[counter + 1];
+
+                    list[counter + 1] = list[counter];
+
+                    list[counter] = placement;
+
+                    organize = false;
+                }
+                counter++;                  
+            }
+        }
+
+        for(int i = 0; i < lines; i++){
+            System.out.println(list[i].toString());
+
+        }
+    }// bubble
+
+        //public static void file(Student list[]) throws IOException {
+
+          //  FileWriter output = new FileWriter("C:\\Users\\carte\\OneDrive\\Documents\\GitHub\\IB-CS\\class.txt");
+           // output.write(list);
+           // output.close();
+        //}
+        public String toString() 
+    { 
+        return studentnumber + " " + grade + " " + lastname + " " + firstname + " " + gender; 
+    } 
+}// lab8s33
